@@ -3,10 +3,10 @@ const Notification = ({ message }) => {
     return null;
   }
   const style = {
-    color: `green`,
-    background: `lightgrey`,
+    color: "green",
+    background: "lightgrey",
     fontSize: 20,
-    borderStyle: `solid`,
+    borderStyle: "solid",
     borderRadius: 5,
     padding: 10,
     marginBottom: 10,
