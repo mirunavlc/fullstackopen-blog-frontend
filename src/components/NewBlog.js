@@ -37,12 +37,13 @@ const NewBlog = ({ setCreateVisible, setError, setInfo, blogs, setBlogs }) => {
   };
 
   return (
-    <>
+    <div className="formDiv">
       <h2>create new</h2>
       <form onSubmit={handleCreate}>
         <div>
-          title
+          <label htmlFor="titleInput">title</label>
           <input
+            id="titleInput"
             type="text"
             value={title}
             name="Title"
@@ -50,8 +51,9 @@ const NewBlog = ({ setCreateVisible, setError, setInfo, blogs, setBlogs }) => {
           />
         </div>
         <div>
-          author
+          <label htmlFor="authorInput">author</label>
           <input
+            id="authorInput"
             type="text"
             value={author}
             name="Author"
@@ -59,8 +61,9 @@ const NewBlog = ({ setCreateVisible, setError, setInfo, blogs, setBlogs }) => {
           />
         </div>
         <div>
-          url
+          <label htmlFor="urlInput">url</label>
           <input
+            id="urlInput"
             type="text"
             value={url}
             name="Url"
@@ -69,7 +72,7 @@ const NewBlog = ({ setCreateVisible, setError, setInfo, blogs, setBlogs }) => {
         </div>
         <button type="submit">create</button>
       </form>
-    </>
+    </div>
   );
 };
 
