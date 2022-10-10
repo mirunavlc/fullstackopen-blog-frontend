@@ -43,4 +43,16 @@ const put = async (blog) => {
   return response.data;
 };
 
-export default { getAll, setToken, post, put };
+const remove = async (blog) => {
+  if (!token) {
+    const user = JSON.parse(window.localStorage.getItem("loggedUser"));
+    if (user) setToken(user.token);
+  }
+  const config = {
+    headers: { Authorization: token },
+  };
+  const response = await axios.delete(baseUrl + `/${blog.id}`, config);
+  return response.data;
+};
+
+export default { getAll, setToken, post, put, remove };
