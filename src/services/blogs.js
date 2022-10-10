@@ -31,4 +31,16 @@ const post = async (blog) => {
   return response.data;
 };
 
-export default { getAll, setToken, post };
+const put = async (blog) => {
+  if (!token) {
+    const user = JSON.parse(window.localStorage.getItem("loggedUser"));
+    if (user) setToken(user.token);
+  }
+  const config = {
+    headers: { Authorization: token },
+  };
+  const response = await axios.put(baseUrl + `/${blog.id}`, blog, config);
+  return response.data;
+};
+
+export default { getAll, setToken, post, put };

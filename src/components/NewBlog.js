@@ -1,7 +1,7 @@
 import { useState } from "react";
 import blogService from "../services/blogs";
 
-const NewBlog = ({ setError, setInfo, blogs, setBlogs }) => {
+const NewBlog = ({ setCreateVisible, setError, setInfo, blogs, setBlogs }) => {
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
   const [url, setUrl] = useState("");
@@ -19,8 +19,15 @@ const NewBlog = ({ setError, setInfo, blogs, setBlogs }) => {
       setTitle("");
       setAuthor("");
       setUrl("");
-      setBlogs(blogs.concat(blog));
+      const sortedByLikes = blogs.concat(blog).sort((a, b) => {
+        return a.likes < b.likes ? -1 : 1;
+      });
+      setBlogs(sortedByLikes);
       setInfo(`added a new blog ${blog.title} by ${blog.author}`);
+      setTimeout(() => {
+        setInfo(null);
+      }, 5000);
+      setCreateVisible(false);
     } catch (exception) {
       setError("Unsuccessful creation of blog");
       setTimeout(() => {

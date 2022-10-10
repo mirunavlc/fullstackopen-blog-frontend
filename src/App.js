@@ -5,6 +5,7 @@ import blogService from "./services/blogs";
 import loginService from "./services/login";
 import Error from "./components/Error";
 import Notification from "./components/Notification";
+import LoginForm from "./components/LoginForm";
 
 const App = () => {
   const [blogs, setBlogs] = useState([]);
@@ -15,9 +16,15 @@ const App = () => {
   const [user, setUser] = useState(
     JSON.parse(window.localStorage.getItem("loggedUser"))
   );
+  const [createVisible, setCreateVisible] = useState(false);
 
   useEffect(() => {
-    blogService.getAll().then((blogs) => setBlogs(blogs));
+    blogService.getAll().then((blogs) => {
+      const sortedByLikes = blogs.sort((a, b) => {
+        return a.likes < b.likes ? -1 : 1;
+      });
+      setBlogs(sortedByLikes);
+    });
   }, [user]);
 
   const handleLogin = async (event) => {
@@ -48,30 +55,37 @@ const App = () => {
 
   const loginForm = () => {
     return (
-      <>
-        <h2>login to app</h2>
-        <form onSubmit={handleLogin}>
-          <div>
-            username
-            <input
-              type="text"
-              value={username}
-              name="Username"
-              onChange={({ target }) => setUsername(target.value)}
-            />
-          </div>
-          <div>
-            password
-            <input
-              type="password"
-              value={password}
-              name="Password"
-              onChange={({ target }) => setPassword(target.value)}
-            />
-          </div>
-          <button type="submit">login</button>
-        </form>
-      </>
+      <LoginForm
+        username={username}
+        password={password}
+        handleLogin={handleLogin}
+        handleUsernameChange={({ target }) => setUsername(target.value)}
+        handlePasswordChange={({ target }) => setPassword(target.value)}
+      />
+    );
+  };
+
+  const createForm = () => {
+    const hideWhenVisible = { display: createVisible ? "none" : "" };
+    const showWhenVisible = { display: createVisible ? "" : "none" };
+
+    return (
+      <div>
+        <div style={hideWhenVisible}>
+          <button onClick={() => setCreateVisible(true)}>
+            create new blog
+          </button>
+        </div>
+        <div style={showWhenVisible}>
+          <NewBlog
+            setInfo={setInfo}
+            setError={setError}
+            blogs={blogs}
+            setBlogs={setBlogs}
+            setCreateVisible={setCreateVisible}
+          />
+        </div>
+      </div>
     );
   };
 
@@ -84,20 +98,16 @@ const App = () => {
           <button onClick={handleLogout}>log out</button>
         </p>
         {blogs.map((blog) => (
-          <Blog key={blog.id} blog={blog} />
+          <Blog
+            key={blog.id}
+            blog={blog}
+            blogs={blogs}
+            setBlogs={setBlogs}
+            setError={setError}
+            setInfo={setInfo}
+          />
         ))}
       </>
-    );
-  };
-
-  const createForm = () => {
-    return (
-      <NewBlog
-        setInfo={setInfo}
-        setError={setError}
-        blogs={blogs}
-        setBlogs={setBlogs}
-      />
     );
   };
 
