@@ -56,11 +56,13 @@ const Blog = ({ blog, blogs, setBlogs, setError, setInfo }) => {
     }
   };
   return (
-    <ul className="blog">
+    <li className="blog">
       <b>{blog.title}</b> by {blog.author} has <b>{blog.likes}</b> likes
-      <button onClick={handleLikesChanges}>+1 like</button>
+      <button id="like-button" onClick={handleLikesChanges}>
+        +1 like
+      </button>
       <button onClick={handleRemove}>remove</button>
-    </ul>
+    </li>
   );
 };
 

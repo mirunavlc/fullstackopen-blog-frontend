@@ -19,12 +19,14 @@ const App = () => {
   const [createVisible, setCreateVisible] = useState(false);
 
   useEffect(() => {
-    blogService.getAll().then((blogs) => {
-      const sortedByLikes = blogs.sort((a, b) => {
-        return a.likes < b.likes ? -1 : 1;
+    if (user) {
+      blogService.getAll().then((blogs) => {
+        const sortedByLikes = blogs.sort((a, b) => {
+          return a.likes < b.likes ? -1 : 1;
+        });
+        setBlogs(sortedByLikes);
       });
-      setBlogs(sortedByLikes);
-    });
+    }
   }, [user]);
 
   const handleLogin = async (event) => {
@@ -72,7 +74,10 @@ const App = () => {
     return (
       <div>
         <div style={hideWhenVisible}>
-          <button onClick={() => setCreateVisible(true)}>
+          <button
+            id="create-new-blog-button"
+            onClick={() => setCreateVisible(true)}
+          >
             create new blog
           </button>
         </div>
@@ -97,16 +102,18 @@ const App = () => {
           {user.name} is logged
           <button onClick={handleLogout}>log out</button>
         </p>
-        {blogs.map((blog) => (
-          <Blog
-            key={blog.id}
-            blog={blog}
-            blogs={blogs}
-            setBlogs={setBlogs}
-            setError={setError}
-            setInfo={setInfo}
-          />
-        ))}
+        <ul className="blogs">
+          {blogs.map((blog, index) => (
+            <Blog
+              key={index}
+              blog={blog}
+              blogs={blogs}
+              setBlogs={setBlogs}
+              setError={setError}
+              setInfo={setInfo}
+            />
+          ))}
+        </ul>
       </>
     );
   };

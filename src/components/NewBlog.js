@@ -70,7 +70,9 @@ const NewBlog = ({ setCreateVisible, setError, setInfo, blogs, setBlogs }) => {
             onChange={({ target }) => setUrl(target.value)}
           />
         </div>
-        <button type="submit">create</button>
+        <button id="submit-new-blog-button" type="submit">
+          create
+        </button>
       </form>
     </div>
   );
